@@ -1,0 +1,261 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    margin-top: 8%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f5;
+}
+
+h1.title {
+    margin: 10px;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.todostuff {
+    width: 900vh;
+    max-width: 900px;
+    background: linear-gradient(135deg, #005dfe, #b984c4);
+    color: #fff;
+    border-radius: 20px;
+    padding: 40px 35px;
+    line-height: 40px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
+}
+
+.todostuff:hover {
+    transform: translateY(-10px);
+}
+
+.todostuff .title {
+    font-size: 55px;
+    margin-bottom: 30px;
+    text-align: center;
+    color: #222;
+}
+
+.listandtask {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
+    gap: 0px;
+}
+
+.alltasks {
+    margin-left: 50px;
+}
+
+.tasklisttitle {
+    font-size: 40px;
+    color: #fbf9f6;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.tasklist {
+    margin-top: 10px;
+    font-size: 18px;
+}
+
+li {
+    margin-bottom: -10px;
+    transition: color 0.3s ease-in-out;
+}
+
+li:hover {
+    color: #ffeb3b;
+}
+
+.activelist {
+    font-size: 25px;
+    font-weight: bold;
+    color: #ffeb3b;
+    transition: transform 0.2s ease-in-out;
+}
+
+.activelist:hover {
+    transform: scale(1.05);
+}
+
+input.newlist {
+    height: 30px;
+    border-radius: 12px;
+    border: none;
+    margin-top: 10px;
+    margin-left: -15px;
+    padding: 0 10px;
+    box-shadow: inset 0px 2px 4px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+input.newlist:focus {
+    box-shadow: inset 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+button.btn {
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    background-color: #ffeb3b;
+    color: #222;
+    font-weight: bold;
+    transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+button.btn:hover {
+    background-color: #ffd600;
+    transform: rotate(90deg);
+}
+
+.todo {
+    color: #222;
+    min-width: 400px;
+    background-color: #e9eaf5;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.taskcount {
+    font-size: 12px;
+    margin-left: 120px;
+}
+
+input.newtask {
+    height: 30px;
+    background: transparent;
+    border: none;
+    margin-top: 10px;
+    margin-left: 15px;
+    padding: 0 10px;
+    border-bottom: 2px solid #dddde3;
+    transition: border-color 0.3s ease-in-out;
+}
+
+input.newtask:focus {
+    border-color: #005dfe;
+}
+
+button.todobodybtn {
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    background-color: #ffeb3b;
+    color: #222;
+    font-weight: bold;
+    transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+button.todobodybtn:hover {
+    background-color: #ffd600;
+    transform: scale(1.1);
+}
+
+.btndelete {
+    height: 30px;
+    width: 150px;
+    margin-left: -5px;
+    border: none;
+    cursor: pointer;
+    background: transparent;
+    color: #005dfe;
+    transition: color 0.3s ease-in-out;
+}
+
+.btndelete:hover {
+    color: #ff0000;
+}
+
+.todobody {
+    margin-left: 20px;
+}
+
+.deletestuff {
+    margin-left: 10px;
+}
+
+.todoheader {
+    display: flex;
+    background-color: #dddde3;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.tasklists {
+    margin-left: 20px;
+    color: #005dfe;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+}
+/* Hide the default checkbox */
+.task input[type="checkbox"] {
+    display: none;
+}
+
+/* Create a custom checkbox */
+.task label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-size: 18px;
+    position: relative;
+    padding-left: 35px;
+    margin-bottom: 12px;
+}
+
+.task label::before {
+    content: '';
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background-color: #dddde3;
+    border-radius: 5px;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.task input[type="checkbox"]:checked + label::before {
+    background-color: #005dfe;
+    box-shadow: 0px 0px 5px rgba(0, 93, 254, 0.5);
+}
+
+.task label::after {
+    content: '';
+    position: absolute;
+    left: 6px;
+    top: 50%;
+    width: 8px;
+    height: 14px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: translateY(-50%) rotate(45deg);
+    opacity: 0;
+    transition: opacity 0.3s, transform 0.3s;
+}
+
+.task input[type="checkbox"]:checked + label::after {
+    opacity: 1;
+    transform: translateY(-50%) rotate(45deg) scale(1.2);
+}
+
+/* Optional: Add a hover effect */
+.task label:hover::before {
+    background-color: #c4c4c4;
+}
+
+.task input[type="checkbox"]:checked + label:hover::before {
+    background-color: #0044cc;
+}
