@@ -67,21 +67,24 @@ h1.title {
 li {
     margin-bottom: -10px;
     transition: color 0.3s ease-in-out;
+    cursor: pointer;
 }
 
 li:hover {
-    color: #ffeb3b;
+    color: #75cbc8;
 }
 
 .activelist {
     font-size: 25px;
     font-weight: bold;
-    color: #ffeb3b;
+    color: #f3f7f6;
     transition: transform 0.2s ease-in-out;
+   
 }
 
 .activelist:hover {
     transform: scale(1.05);
+    
 }
 
 input.newlist {
