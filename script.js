@@ -1,104 +1,120 @@
-// Select HTML elements from the DOM using data attributes
-const listsContainer = document.querySelector('[data-lists]'); // Container where the list items will be rendered
-const newListForm = document.querySelector('[data-new-list-form]'); // The form for adding a new list
-const newListInput = document.querySelector('[data-new-list-input]'); // The input field within the form
-const deletelistbtn = document.querySelector('[data-delete-list-btn]');
-// Define a key for storing lists in Local Storage
+// Select DOM elements
+const listsContainer = document.querySelector('[data-lists]');
+const newListForm = document.querySelector('[data-new-list-form]');
+const newListInput = document.querySelector('[data-new-list-input]');
+const deleteListBtn = document.querySelector('[data-delete-list-btn]');
+const listDisplayContainer = document.querySelector('[data-list-display-container]');
+const listTitle = document.querySelector('[data-list-title]');
+const listCount = document.querySelector('[data-list-count]');
+const taskContainer = document.querySelector('[data-tasks]');
+
+// Keys for local storage
 const LOCAL_STORAGE_LISTS_KEY = 'task.lists';
 const LOCAL_STORAGE_SELECTED_LISTS_ID_KEY = 'task.selectedListId';
 
-// Load the lists from Local Storage, or initialize an empty array if none exist
+// Load lists from local storage or initialize as an empty array
 let lists = JSON.parse(localStorage.getItem(LOCAL_STORAGE_LISTS_KEY)) || [];
 let selectedListId = localStorage.getItem(LOCAL_STORAGE_SELECTED_LISTS_ID_KEY);
 
-// Add an event listener to the lists container for detecting clicks on list items
+// Event listener for clicking on list items
 listsContainer.addEventListener('click', e => {
     if (e.target.tagName.toLowerCase() === 'li') {
+        // Remove the 'active-list' class from previously selected list
+        const previouslySelected = listsContainer.querySelector('.active-list');
+        if (previouslySelected) {
+            previouslySelected.classList.remove('active-list');
+        }
+        // Add 'active-list' class to the clicked list item
+        e.target.classList.add('active-list');
         selectedListId = e.target.dataset.listId;
-        saveAndRender(); // Save the selected list ID and render the updated UI
+        saveAndRender();
     }
 });
 
-deletelistbtn.addEventListener('click', e => {
-    lists = lists.filter(list => list.id !== selectedListId)
-    selectedListId = null;
-    saveAndRender();
-})
-// Add an event listener to the form that listens for the 'submit' event
+// Event listener for deleting the selected list
+deleteListBtn.addEventListener('click', () => {
+    if (selectedListId) {
+        lists = lists.filter(list => list.id !== selectedListId);
+        selectedListId = null;
+        saveAndRender();
+    }
+});
+
+// Event listener for adding a new list
 newListForm.addEventListener('submit', e => {
-    e.preventDefault(); // Prevents the default form submission behavior, which would refresh the page
+    e.preventDefault();
+    const listName = newListInput.value.trim();
+    if (listName === '') return;
 
-    // Get the value from the new list input field
-    const listName = newListInput.value;
-
-    // Check if the input is empty or null; if so, do nothing and exit the function
-    if (listName == null || listName === '') return;
-
-    // Create a new list object using the createList function
     const list = createList(listName);
-
-    // Add the newly created list object to the lists array
     lists.push(list);
-
-    // Clear the input field after adding the new list
-    newListInput.value = null;
-
-    // Save the updated lists array to Local Storage and render the lists
+    newListInput.value = '';
     saveAndRender();
 });
 
 // Function to create a new list object
 function createList(name) {
-    return { id: Date.now().toString(), name: name, tasks: [] };
+    return { id: Date.now().toString(), name, tasks: [] };
 }
 
-// Function to save the lists array to Local Storage
+// Function to save lists and selected list ID to local storage
 function save() {
     localStorage.setItem(LOCAL_STORAGE_LISTS_KEY, JSON.stringify(lists));
     localStorage.setItem(LOCAL_STORAGE_SELECTED_LISTS_ID_KEY, selectedListId);
 }
 
-// Function to save the lists array and render them on the page
+// Function to save data and render the UI
 function saveAndRender() {
     save();
     render();
 }
 
-// Function to render the lists on the page
+// Function to render the list and selected list details
 function render() {
-    // Clear the container before adding new elements
     clearElement(listsContainer);
+    renderList();
 
-    // Loop through each list in the lists array
+    const selectedList = lists.find(list => list.id === selectedListId);
+    if (selectedList) {
+        listDisplayContainer.style.display = '';
+        listTitle.innerText = selectedList.name;
+        renderTaskCount(selectedList);
+        clearElement(taskContainer);
+        // You might want to add code here to render tasks if needed
+    } else {
+        listDisplayContainer.style.display = 'none';
+    }
+}
+
+// Function to render the task count for the selected list
+function renderTaskCount(selectedList) {
+    const incompleteTasks = selectedList.tasks.filter(task => !task.complete).length;
+    const taskString = incompleteTasks === 1 ? 'task' : 'tasks';
+    listCount.innerText = `${incompleteTasks} ${taskString} remaining`;
+}
+
+// Function to render the list of lists
+function renderList() {
     lists.forEach(list => {
-        // Create a new 'li' (list item) element for each list
         const listElement = document.createElement('li');
-
-        // Set a custom data attribute on the 'li' element for the list's unique ID
         listElement.dataset.listId = list.id;
-
-        // Add a CSS class to the 'li' element for styling purposes
-        listElement.classList.add("list-name");
-
-        // Set the text of the 'li' element to the name of the current list
+        listElement.classList.add('list-name');
         listElement.innerText = list.name;
 
-        // Highlight the active list if it is selected
         if (list.id === selectedListId) {
-            listElement.classList.add('activelist');
+            listElement.classList.add('active-list');
         }
 
-        // Append the 'li' element to the lists container in the DOM
         listsContainer.appendChild(listElement);
     });
 }
 
-// Function to remove all child elements from a given DOM element
+// Function to clear all child elements of a given element
 function clearElement(element) {
     while (element.firstChild) {
         element.removeChild(element.firstChild);
     }
 }
 
-// Initial render call to display the default lists on the page when the script first runs
+// Initial render
 render();
