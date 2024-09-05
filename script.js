@@ -7,6 +7,10 @@ const listDisplayContainer = document.querySelector('[data-list-display-containe
 const listTitle = document.querySelector('[data-list-title]');
 const listCount = document.querySelector('[data-list-count]');
 const taskContainer = document.querySelector('[data-tasks]');
+const taskTemplate = document.getElementById('task-template');
+const newTaskForm = document.querySelector('[data-new-task-form]');
+const newTaskInput = document.querySelector('[data-new-task-input]');
+const completeTaskBtn = document.querySelector('[data-clear-complete-task]');
 
 // Keys for local storage
 const LOCAL_STORAGE_LISTS_KEY = 'task.lists';
@@ -19,16 +23,32 @@ let selectedListId = localStorage.getItem(LOCAL_STORAGE_SELECTED_LISTS_ID_KEY);
 // Event listener for clicking on list items
 listsContainer.addEventListener('click', e => {
     if (e.target.tagName.toLowerCase() === 'li') {
-        // Remove the 'active-list' class from previously selected list
         const previouslySelected = listsContainer.querySelector('.active-list');
         if (previouslySelected) {
             previouslySelected.classList.remove('active-list');
         }
-        // Add 'active-list' class to the clicked list item
         e.target.classList.add('active-list');
         selectedListId = e.target.dataset.listId;
         saveAndRender();
     }
+});
+
+// Event listener for task completion (fix condition)
+taskContainer.addEventListener('click', e => {
+    if (e.target.tagName.toLowerCase() === 'input') {
+        const selectedList = lists.find(list => list.id === selectedListId);
+        const selectedTask = selectedList.tasks.find(task => task.id === e.target.id);
+        selectedTask.complete = e.target.checked;
+        save();
+        renderTaskCount(selectedList);
+    }
+});
+
+// Event listener for clearing completed tasks (fixed syntax)
+completeTaskBtn.addEventListener('click', () => {
+    const selectedList = lists.find(list => list.id === selectedListId);
+    selectedList.tasks = selectedList.tasks.filter(task => !task.complete);
+    saveAndRender();
 });
 
 // Event listener for deleting the selected list
@@ -52,9 +72,27 @@ newListForm.addEventListener('submit', e => {
     saveAndRender();
 });
 
+// Event listener for adding a new task
+newTaskForm.addEventListener('submit', e => {
+    e.preventDefault();
+    const taskName = newTaskInput.value.trim();
+    if (taskName === '') return;
+
+    const task = createTask(taskName); // Use createTask function
+    newTaskInput.value = '';
+    const selectedList = lists.find(list => list.id === selectedListId);
+    selectedList.tasks.push(task);
+    saveAndRender();
+});
+
 // Function to create a new list object
 function createList(name) {
     return { id: Date.now().toString(), name, tasks: [] };
+}
+
+// Function to create a new task object
+function createTask(name) {
+    return { id: Date.now().toString(), name, complete: false };
 }
 
 // Function to save lists and selected list ID to local storage
@@ -80,10 +118,26 @@ function render() {
         listTitle.innerText = selectedList.name;
         renderTaskCount(selectedList);
         clearElement(taskContainer);
-        // You might want to add code here to render tasks if needed
+        renderTasks(selectedList);
     } else {
         listDisplayContainer.style.display = 'none';
     }
+}
+
+// Function to render the tasks of the selected list
+function renderTasks(selectedList) {
+    selectedList.tasks.forEach(task => {
+        const taskElement = document.importNode(taskTemplate.content, true);
+        const checkbox = taskElement.querySelector('input');
+        checkbox.id = task.id;
+        checkbox.checked = task.complete;
+
+        const label = taskElement.querySelector('label');
+        label.htmlFor = task.id;
+        label.append(task.name);
+
+        taskContainer.appendChild(taskElement);
+    });
 }
 
 // Function to render the task count for the selected list

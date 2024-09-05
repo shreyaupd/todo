@@ -2,10 +2,10 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TODO LIST</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
@@ -14,19 +14,15 @@
         <div class="listandtask">
             <div class="alltasks">
                 <h2 class="tasklisttitle">My lists</h2>
-                <ul class="tasklist" data-lists>
-                    <!-- Example list items -->
-                    <!-- <li class="active-list" data-list-id="1">Youtube</li> -->
-                    <!-- <li data-list-id="2">Work</li> -->
-                    <!-- <li data-list-id="3">Grocery</li> -->
-                </ul>
+                <ul class="tasklist" data-lists> </ul>
                 <form action="" data-new-list-form>
-                    <input type="text" class="newlist" data-new-list-input placeholder="New List Name" aria-label="New List Name">
+                    <input type="text" class="newlist" data-new-list-input placeholder="New List Name"
+                        aria-label="New List Name" />
                     <button type="submit" class="btn">+</button>
                 </form>
             </div>
 
-            <div class="todo"  data-list-display-container>
+            <div class="todo" data-list-display-container>
                 <div class="todolist">
                     <div class="todoheader">
                         <h2 class="tasklists" data-list-title>Youtube</h2>
@@ -34,31 +30,25 @@
                     </div>
                 </div>
                 <div class="todobody">
-                    <div class="todotask" data-tasks>
-                        <div class="task">
-                            <input type="checkbox" id="task1">
-                            <label for="task1"><span class="customcheckbox">Record todo list video</span></label>
-                        </div>
-                        <div class="task">
-                            <input type="checkbox" id="task2">
-                            <label for="task2"><span class="customcheckbox">Another task</span></label>
-                        </div>
-                        <div class="task">
-                            <input type="checkbox" id="task3">
-                            <label for="task3"><span class="customcheckbox">A third task</span></label>
-                        </div>
-                    </div>
-
-                    <input type="text" class="newtask" placeholder="Enter new task.">
-                    <button class="todobodybtn">+</button>
+                    <div class="todotask" data-tasks></div>
+                    <form action="" data-new-task-form>
+                        <input type="text" data-new-task-input class="newtask" placeholder="Enter new task." />
+                        <button class="todobodybtn">+</button>
+                    </form>
                 </div>
                 <div class="deletestuff">
-                    <button class="btndelete">Clear completed tasks</button>
+                    <button class="btndelete" data-clear-complete-task>Clear completed tasks</button>
                     <button class="btndelete" data-delete-list-btn>Delete list</button>
                 </div>
             </div>
         </div>
     </div>
+    <template id="task-template">
+        <div class="task">
+            <input type="checkbox" />
+            <label><span class="customcheckbox"></span></label>
+        </div>
+    </template>
     <script src="script.js"></script>
 </body>
 
